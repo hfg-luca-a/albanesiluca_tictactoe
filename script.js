@@ -15,18 +15,16 @@ let posarry = [];
 // wird in der html datei aufgerufen und im programmcode unter resetfield()
 /* jshint ignore:start */
 
-function generate() {
 
+function generate() {
+    let counter = 0;
+    let newId = 0;
     // lässt input und button verschwinden 
     document.getElementById("pointstowin").setAttribute('hidden', true);
     document.getElementById("size").setAttribute('hidden', true);
     document.getElementById("generatebtn").setAttribute('hidden', true);
     //leert das gamearray
-    gamearry.splice(0, gamearry.length);
-
-    let counter = 0;
-    let newId = 0;
-
+    gamearry.splice(0, gamearry.length); //leert das gamearry
     $("tr").remove(); // löscht alle td elemente
     // holt sich die größe des Spielfeldes
     gamesize = Number(document.getElementById("size").value);
@@ -41,17 +39,24 @@ function generate() {
             let idvar = String(i) + "-" + String(j)
             $("#" + newId).append("<td id=" + idvar + "></td>");
             counter++;
-
         }
     }
 }
 /* jshint ignore:end */
+// gibt dem user visual feedback ob eine seine angegbenen parameter korrekt sind
+$("#pointstowin").change(function () {
+    let temp = Number(document.getElementById("size").value) //verlegt weil zeile zu lang
+    if (Number(document.getElementById("pointstowin").value) > temp || Number(document.getElementById("pointstowin").value) <= 0) {
+        document.getElementById("pointstowin").style.backgroundColor = "red"
+    } else {
+        document.getElementById("pointstowin").style.backgroundColor = "lightgreen"
+    }
+});
 
 $("table").on("click", "td", function () { //wird ausgeführt wenn of ein td element geklickt wird
 
 
     if ($(this).text() === "") { // wenn in dem td element noch kein wert drin ist kann er beschrieben werden 
-
         $(this).text(changeplayer()); // schreibt den Spielr in das Element der aktuell an der Reihe ist
         let id = $(this).attr("id"); // holt sich die id des geklickten td Elements
         posarry = id.split("-"); // schreibt die Positions werte in ein temp. array
@@ -60,18 +65,12 @@ $("table").on("click", "td", function () { //wird ausgeführt wenn of ein td ele
         checkunentschieden();
         checkwin(posarry);
         checkdiagonal();
-
     }
-
-
-    if (document.getElementById("player2").value === "Bot") {
+    if (document.getElementById("player2").value === "Bot") { // lässt den Bot setzten
         setTimeout(function () {
             placingBot();
         }, 500);
-
     }
-
-    // console.log($(this).attr("id"));
 });
 
 
@@ -117,21 +116,23 @@ function checkwin(button) {
         winarryv = [],
         hpos = [],
         vpos = []; // Statements reduzieren
-        // hier wird die aktuell geklickte reihe durchsucht
+    // hier wird die aktuell geklickte reihe durchsucht
     for (let index = 0; index < gamesize; index++) {
-
         if (gamearry[posx][posy] === gamearry[posx][index]) {
             // hier werden die positionen der gleichen symbole gespeichert um später die gewinnreihe zu highlighten 
             hpos.push({
                 posx: posx,
                 posy: index
             });
+            // gleiche symbole werden in einem arry gespeichert | wenn sie nebeinader sind
             winarryh.push(gamearry[posx][posy]);
             if (winarryh.length >= pointstowin) {
                 winner(currentplayer);
                 showcase(hpos);
                 break;
             }
+            // wenn ein ungleiches symbol erkannt wird, wird das winarry geleert
+            // somit kann ich festellen ob die Zeichen nebeneinader liegen
         } else {
             winarryh.splice(0, winarryh.length);
         }
@@ -145,20 +146,22 @@ function checkwin(button) {
                 posx: index,
                 posy: posy
             })
-            winarryv.push(gamearry[posx][posy]) // gleiche symbole werden in einem arry gespeichert | wenn sie nebeinader sind
+            // gleiche symbole werden in einem arry gespeichert | wenn sie nebeinader sind
+            winarryv.push(gamearry[posx][posy])
             if (winarryv.length >= pointstowin) {
                 winner(currentplayer)
                 showcase(vpos)
                 break;
             }
-           // wenn ein ungleiches symbol erkannt wird, wird das winarry geleert
-           // somit kann ich festellen ob die Zeichen nebeneinader liegen 
-        } else { 
+            // wenn ein ungleiches symbol erkannt wird, wird das winarry geleert
+            // somit kann ich festellen ob die Zeichen nebeneinader liegen 
+        } else {
             winarryv.splice(0, winarryv.length)
         }
     }
 }
-
+// hier ich generiere die wincondition abhänig von der angegebenen länge der gewinnreihe 
+// bei übergebenen zeichen = X und pointstowin = 5 erzeugt diese Funktion einen string = XXXXX und gibt diesen zurück
 function generatewincon(zeichen) {
     let tempvar = "";
     for (let index = 0; index < pointstowin; index++) {
@@ -166,7 +169,7 @@ function generatewincon(zeichen) {
     }
     return tempvar;
 }
-
+//hier werden die diagonalen gecheckt
 function checkdiagonal() {
 
     let winconditiond1 = generatewincon(p1),
@@ -175,36 +178,40 @@ function checkdiagonal() {
         curLineD2 = "",
         d1pos = [],
         d2pos = [];
-
+    // hier loopen wir durch das ganze spielfeld
     for (let i = 0; i < gamesize; i++) {
-
         for (let j = 0; j < gamesize; j++) {
-
+            // fals unten stehende if statements nicht zutreffen werden die positions arrays und diagonalen string wieder geleert
+            // um platz für einen neuen durchlauf zu schaffen
+            // falls aber ein gewinner gefunden wurde, werden die zugehörigen winner funktionen aufgerufen
             curLineD = "";
             curLineD2 = "";
             d1pos.splice(0, d1pos.length);
             d2pos.splice(0, d2pos.length);
-
+            //hier wird das spielfeld eingegrenzt damit wir keine felder checken die garnicht existieren
             if ((i + pointstowin - 1) < gamesize) {
                 if ((j + pointstowin - 1) < gamesize) {
                     for (let m = 0; m < pointstowin; m++) {
                         curLineD += gamearry[i + m][j + m]
+                        // hier werden positionsdaten für die showcase funktion gespeichert
                         d1pos.push({
                             posx: i + m,
                             posy: j + m
                         })
                     }
+                    //hier wird ermittelt ob die diagonale abgebildet als string die wincondition enthält
                     if (curLineD.includes(winconditiond1)) {
                         showcase(d1pos)
                         winner(p1);
-                        sperren()
+                        
                     } else if (curLineD.includes(winconditiond2)) {
                         showcase(d1pos)
                         winner(p2)
-                        sperren()
+                        
                     }
                 }
             }
+            //hier wird der code bzw die suche gespiegelt um auch alle anderen diagonalen zu checken
             if (j - (pointstowin - 1) >= 0) {
                 if (i + (pointstowin - 1) < gamesize) {
                     for (let m = 0; m < pointstowin; m++) {
@@ -227,48 +234,45 @@ function checkdiagonal() {
         }
     }
 }
-
+// diese Funktion sperrt das spielfeld nachdem ein gewinner ermittelt wurde
+// dies ist nötig fals ein spieler gewinnt befor das gesammte feld beschrieben ist
 function sperren() {
-    switchvar = false;
-    $("td").prop("disabled", true);
+    switchvar = false; // fals ein bot ausgewählt ist wird dieser auch gesperrt
+    $("td").prop("disabled", true); // disabled alle td zellen -> onclick ist disabled
 
 }
-
+// diese funktion highlightet alle zellen einer gewinnreihe 
+// ihr wird ein array mit der postion aller zellen die am gewinn beteiligt sind übergeben 
 function showcase(posofwincells) {
     console.log(posofwincells)
-    for (const item of posofwincells) {
+    for (const item of posofwincells) { //loopt durch jede zelle durch
         let x = item.posx
         let y = item.posy
         let pos = `${x}-${y}`;
-        document.getElementById(pos).style.background = "lightgreen";
+        document.getElementById(pos).style.background = "lightgreen"; //highlightet die jeweilige zelle in lightgreen
     }
 }
-
+// diese Funktion checkt ob ein unentschieden vorliegt
 function checkunentschieden() {
     let counter = 0
     console.log(gamearry)
-    for (let x = 0; x < gamesize; x++) {
+    for (let x = 0; x < gamesize; x++) { //loopt über das ganze spielfeld und zählt noch freie stellen
         for (let y = 0; y < gamesize; y++) {
             if (gamearry[x][y] === undefined) {
                 counter++;
             }
-
-
         }
-
-
     }
-    if (counter === 0) {
+    if (counter === 0) { // wenn keine freien stellen mehr zur verfügung stehen wird das Unentschieden ausgerufen
         alert('Unentschieden')
         winner("none")
     }
-
 }
 
 function winner(zeichen) {
     sperren()
     //schaut wer gewonnen hat
-    if (zeichen === "X") {
+    if (zeichen === p1) {
         //schreibt die aktuelle punktzahl in das span tag
         console.log(document.getElementById("player1").value + " hat gewonnen")
         p1points++;
@@ -277,11 +281,10 @@ function winner(zeichen) {
 
     } else if (zeichen === "none") {
         //placeholder
-    } else {
+    } else if (zeichen === p2) {
         p2points++;
         console.log(document.getElementById("player2").value + " hat gewonnen")
         document.getElementById("punktep2").innerText = p2points;
-
     }
     //lässt den neue Runde Button erscheinen
     document.getElementById("neuerundebtn").removeAttribute('hidden');
@@ -293,7 +296,7 @@ function winner(zeichen) {
 //wird in der html datei aufgerufen -> heißt jshint trifft nicht zu
 /* jshint ignore:start */
 function resetfield() {
-    switchvar = true;
+    switchvar = true; //enabeled wieder den bot
     //richtet den Pfeil aus
     if (currentplayer !== "X") {
         document.getElementById("arrow").innerHTML = "&#8592;"
@@ -304,6 +307,11 @@ function resetfield() {
     document.getElementById("neuerundebtn").setAttribute('hidden', true);
     //generiert das Spielfeld neu
     generate();
+    if (document.getElementById("player2").value === "Bot") {
+        setTimeout(function () { // wartet 500ms -> der Bot denkt hahah
+            placingBot();
+        }, 500);
+    }
 }
 /* jshint ignore:end */
 
@@ -316,17 +324,17 @@ function placingBot() { //Zufalls Bot
     if (switchvar === true) {
         let y = getRandomInt(gamesize)
         let x = getRandomInt(gamesize)
-        if (gamearry[x][y] === undefined) {
+        if (gamearry[x][y] === undefined) { //checkt ob die zufällige position schon beschrieben ist
             const temparry = [x, y]
             console.error(y + "|" + x)
             //beschreibt ein td tag mit O
             let randomtdtag = document.getElementById(`${x}-${y}`)
-            $(randomtdtag).prop("disabled", true);
-            const temp = changeplayer()
+            $(randomtdtag).prop("disabled", true); // disabled td tag damit der human player ihn nicht benutzen kann
+            const temp = changeplayer();
             randomtdtag.innerText = temp
             //setzt an der gleichen stelle im gamearry ein O
             gamearry[x][y] = temp
-            console.warn(x + ":" + y + "|" + document.getElementById(`${x}-${y}`).innerHTML)
+            // console.warn(x + ":" + y + "|" + document.getElementById(`${x}-${y}`).innerHTML)
             checkunentschieden()
             checkwin(temparry)
             return
@@ -336,82 +344,3 @@ function placingBot() { //Zufalls Bot
         }
     }
 }
-
-
-
-/**
- * 
- * Alte Gewinnabfrage
- * 
- */
-//the old shit
-/**
- * function determineWin(pressedbtn) {
-    console.log(gamesize)
-    console.log($(pressedbtn).text())
-    const gecklicktepos = pressedbtn.split(",")
-    console.log(gecklicktepos);
-
-
-
-    let checkarry = [];
-    let vcheckarry = [];
-    let dcheckarry = [];
-    let d2checkarry = [];
-
-    for (let x = 0; x < gamesize; x++) {
-
-        if (gamearry[gecklicktepos[0]][gecklicktepos[1]] === gamearry[gecklicktepos[0]][x]) {
-            checkarry.push(gamearry[gecklicktepos[0]][x])
-            if (checkarry.length === gamesize) {
-                winner(gamearry[gecklicktepos[0]][x])
-            }
-
-        }
-
-    }
-    //  console.log(checkarry)
-
-    for (let y = 0; y < gamesize; y++) {
-
-        if (gamearry[gecklicktepos[0]][gecklicktepos[1]] === gamearry[y][gecklicktepos[1]]) {
-            vcheckarry.push(gamearry[y][gecklicktepos[1]])
-            if (vcheckarry.length === gamesize) {
-                winner(gamearry[y][gecklicktepos[1]])
-            }
-
-        }
-
-    }
-    //console.log(vcheckarry)
-
-    for (let y = 0; y < gamesize; y++) {
-
-        if (gamearry[gecklicktepos[0]][gecklicktepos[1]] === gamearry[y][y]) {
-            dcheckarry.push(gamearry[y][y])
-            if (dcheckarry.length === gamesize) {
-                winner(gamearry[y][y])
-            }
-
-        }
-
-    }
-    //  console.log(dcheckarry)
-    let testb = 0;
-    let test2 = gamesize - 1
-    for (let y = 0; y < gamesize; y++) {
-        //console.log(test)
-        // console.log(test2)
-        if (gamearry[gecklicktepos[0]][gecklicktepos[1]] === gamearry[test2][testb]) {
-            d2checkarry.push(gamearry[test2][testb])
-            if (d2checkarry.length === gamesize) {
-                winner(gamearry[test2][testb])
-            }
-        }
-        test++;
-        test2--;
-    }
-    // console.log(d2checkarry)
-}
- * 
- */
