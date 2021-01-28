@@ -1,5 +1,11 @@
-# albanesiluca_tictactoe
+# Willkommen in der README-Datei von Luca's web tictactoe
 
+## Motivation
+
+
+
+
+## Struktur / Aufbau
 - `generate()` <br>
   In dieser funktion wird das Spielfeld generiert, d.h hier werden die erforderlichen tr & td elemente erzeugt und an das table element in der html datei gehängt. Fals schon ein Spielfeld besteht z.b nach einer Runde, wird erst das alte Spielfeld gelöscht. `$("tr").remove();` sorgt dafür das alle Zeilen des Spielfelds vor der neuerstellung gelöscht wird. In dieser Funktion wird neben der Visuellen erstellung des Spielfeldes auch ein Abgleich in Form eines 2 Dimensionalen Arrays erstellt. Dieses Array spiegelt die aktuelle Situation des Spielfeldes in Datenform wieder. Ebenso ist diese Funktion verantwortlich dafür die Inputtags wie auch den "generatebtn" verschwinden zu lassen wenn.
   Die generierung des Spielfeldes läuft wie folgt ab: <br>
@@ -30,3 +36,5 @@
   In dieser Funktion wird die `generate()` aufgerufen um das Spielfeld zu reseten. Ebenso darf nun der jenige die neue Runde anfangen der dies letzte runde nicht durfte.
 - `placingBot()`<br>
   Dies ist die Funktion des Basic-Bots. Es werden zunächst eine Zufällige x & y Koordinate generiert. Wenn diese schon beschreiben ist wird eine neue Koordinate generiert. Wenn diese Koordinate Frei ist beschreibt diese der Bot mit seinem Zeichen. Ebnso setzt der Bot sein Zeichen im Datenmodell.
+
+## Mögliche Erweiterungen
