@@ -2,10 +2,10 @@
 
 ## Motivation
 
-
-
+Bei unserer Aufgabe ging es darum das gelernte so gut wie es geht umzusetzen und ein Vertrauen zu JavaScript & der jeweiligen Entweicklungsumgebung zu bekommen.
 
 ## Struktur / Aufbau
+
 - `generate()` <br>
   In dieser funktion wird das Spielfeld generiert, d.h hier werden die erforderlichen tr & td elemente erzeugt und an das table element in der html datei gehängt. Fals schon ein Spielfeld besteht z.b nach einer Runde, wird erst das alte Spielfeld gelöscht. `$("tr").remove();` sorgt dafür das alle Zeilen des Spielfelds vor der neuerstellung gelöscht wird. In dieser Funktion wird neben der Visuellen erstellung des Spielfeldes auch ein Abgleich in Form eines 2 Dimensionalen Arrays erstellt. Dieses Array spiegelt die aktuelle Situation des Spielfeldes in Datenform wieder. Ebenso ist diese Funktion verantwortlich dafür die Inputtags wie auch den "generatebtn" verschwinden zu lassen wenn.
   Die generierung des Spielfeldes läuft wie folgt ab: <br>
@@ -21,7 +21,10 @@
 - `setPlayer()` <br>
   Diese Funktion hat die Aufgabe nach betätigen des "SetPlayer" buttons die Inputs der Spielernamen zu disablen. Ebenso lässt sie den Button nach betätigung verschwinden.
 - `checkwin(button)` <br>
+  Die checkwin(button) Funktion ist mit der checkdiagonal() das Herzstück der Gewinnerkennung. Die funktion bekommt die Position des geklickten Buttons bzw. td Elements übergeben. Das bringt den Vorteil, dass wir nicht das ganze Spielfeld scannen müssen sonder nur die jeweilige Horizontale bzw. Vertikale Linie. Das Vertikale bzw. Horizontale Vorgehen unterscheidet sich in seiner Methodik nicht. Es wird durch die geklickt Reihe bzw. Spalte geloopt. Wenn das gleiche Zeichen gefunden wurde wie das Zeichen an der Stelle wo gelickt wurde wird dieses Zeichen in ein Array geschrieben. Wenn an der nächsten stelle nicht das gleiche Zeichen Steht wird das Array vollständig geleert. Die versichert das im Array nur zeichen landen die lebeneinader leigen. Sobald das array die länge pointstowin erreicht hat ist ein gewinner ermittelt worden und die folge Funktionen übernehmen.
 - `checkdiagonal()` <br>
+  In der Funktion checkdiagonal() werden die Diagonalen überprüft. In diesem fall loopen wir über das ganze Spielfeld. Die Diagonalen werden in In Strings abgebildet. Diese Strings geben den Inhalt einer Diagonalen wieder. Somit können wir die mit `generatewincon(zeichen)` erzeugten winconditions abfragen. Fals der String der jeweiligen Diagonale die winconditiond1 o. winconditiond2 beinhaltet übernehmen die gewinn Funktionen. Ebenso werden wieder Positionsdaten zwischengespeichert um bei gewinn diese an die showcase Funktion zu übergeben.
+  Die Methodik zwischen Diagonale von links nach rechts % von rechts nach links unterscheiden sich nicht.
 - `generatewincon(zeichen)` <br>
   Diese Funktion generiert einen String der das überbergebene Zeichen so oft enthält wie pointstowin angegeben ist. Dieser String wird zurückgegeben.
 - `sperren()`<br>
@@ -38,3 +41,6 @@
   Dies ist die Funktion des Basic-Bots. Es werden zunächst eine Zufällige x & y Koordinate generiert. Wenn diese schon beschreiben ist wird eine neue Koordinate generiert. Wenn diese Koordinate Frei ist beschreibt diese der Bot mit seinem Zeichen. Ebnso setzt der Bot sein Zeichen im Datenmodell.
 
 ## Mögliche Erweiterungen
+
+- Ein Bot welcher Entscheidungen nicht zufällig trifft.
+- Ein Bot welcher AI gestüzt funktionier -> p5.js usw.
