@@ -17,7 +17,7 @@ let posarry = [];
 
 
 function generate() {
-    let counter = 0;
+
     let newId = 0;
     // lässt input und button verschwinden 
     document.getElementById("pointstowin").setAttribute('hidden', true);
@@ -38,7 +38,7 @@ function generate() {
         for (let j = 0; j < gamesize; j++) {
             let idvar = String(i) + "-" + String(j)
             $("#" + newId).append("<td id=" + idvar + "></td>");
-            counter++;
+            
         }
     }
 }
