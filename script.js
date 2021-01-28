@@ -117,9 +117,11 @@ function checkwin(button) {
         winarryv = [],
         hpos = [],
         vpos = []; // Statements reduzieren
+        // hier wird die aktuell geklickte reihe durchsucht
     for (let index = 0; index < gamesize; index++) {
 
         if (gamearry[posx][posy] === gamearry[posx][index]) {
+            // hier werden die positionen der gleichen symbole gespeichert um später die gewinnreihe zu highlighten 
             hpos.push({
                 posx: posx,
                 posy: index
@@ -134,21 +136,24 @@ function checkwin(button) {
             winarryh.splice(0, winarryh.length);
         }
     }
-
+    // hier wird die aktuell geklickte spalte durchsucht
     for (let index = 0; index < gamesize; index++) {
 
         if (gamearry[posx][posy] === gamearry[index][posy]) {
+            // hier werden die positionen der gleichen symbole gespeichert um später die gewinnreihe zu highlighten 
             vpos.push({
                 posx: index,
                 posy: posy
             })
-            winarryv.push(gamearry[posx][posy])
+            winarryv.push(gamearry[posx][posy]) // gleiche symbole werden in einem arry gespeichert | wenn sie nebeinader sind
             if (winarryv.length >= pointstowin) {
                 winner(currentplayer)
                 showcase(vpos)
                 break;
             }
-        } else {
+           // wenn ein ungleiches symbol erkannt wird, wird das winarry geleert
+           // somit kann ich festellen ob die Zeichen nebeneinader liegen 
+        } else { 
             winarryv.splice(0, winarryv.length)
         }
     }
