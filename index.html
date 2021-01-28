@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Luca Albanesi</title>
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <br />
+    <input type="number" id="size" placeholder="n*n" />
+    <input type="number" id="pointstowin" placeholder="points to win" />
+    <button id="generatebtn" onclick="generate()">generate</button><br />
+    <div class="playerconf">
+      <span id="punktep1">0</span>
+      <input type="text" id="player1" value="" placeholder="Player1" />
+      <span id="arrow">&#8592;</span>
+      <input type="text" id="player2" value="" placeholder="Player2" /><span id="punktep2">0</span><br />
+      <button id="setplayerbtn" onclick="setPlayer()">Set Players</button><br />
+      <button id="neuerundebtn" onclick="resetfield()" hidden>Neue Runde</button><br />
+    </div>
+
+    <table class="center"></table>
+
+    <script src="script.js"></script>
+  </body>
+</html>
