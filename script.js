@@ -16,7 +16,7 @@ let posarry = [];
 /* jshint ignore:start */
 function unhidde() {
     $('.playerconf').removeAttr('hidden')
-    $('.spielverlauf').removeAttr('hidden')     
+    
 }
 
 function generate() {
@@ -27,7 +27,7 @@ function generate() {
     document.getElementById("pointstowin").setAttribute('hidden', true);
     document.getElementById("size").setAttribute('hidden', true);
     document.getElementById("generatebtn").setAttribute('hidden', true);
-    
+
     //leert das gamearray
     gamearry.splice(0, gamearry.length); //leert das gamearry
     $("tr").remove(); // löscht alle td elemente
@@ -43,18 +43,28 @@ function generate() {
         for (let j = 0; j < gamesize; j++) {
             let idvar = String(i) + "-" + String(j)
             $("#" + newId).append("<td id=" + idvar + "></td>");
-            
+
         }
     }
 }
 /* jshint ignore:end */
 
 //Stellt jeden Spielverlauf dar
+$('togglespielv').on("change", function () {
+    $('.spielverlauf').toggle();
+    console.log("changed")
+
+})
+
+document.getElementById("togglespielv").addEventListener("change", function () {
+    $('.spielverlauf').toggle();
+});
+
 
 function showspielferlauf(spielvtext) {
-    
+
     $('.spielverlauf').append(`<div class="unterpunkt">${spielvtext}</div>`)
-    
+
 }
 
 // gibt dem user visual feedback ob eine seine angegbenen parameter korrekt sind
@@ -217,11 +227,11 @@ function checkdiagonal() {
                     if (curLineD.includes(winconditiond1)) {
                         showcase(d1pos)
                         winner(p1);
-                        
+
                     } else if (curLineD.includes(winconditiond2)) {
                         showcase(d1pos)
                         winner(p2)
-                        
+
                     }
                 }
             }
