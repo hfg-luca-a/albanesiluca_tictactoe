@@ -17,7 +17,6 @@ let posarry = [];
 
 
 function generate() {
-
     let newId = 0;
     // lässt input und button verschwinden 
     document.getElementById("pointstowin").setAttribute('hidden', true);
@@ -76,14 +75,11 @@ $("table").on("click", "td", function () { //wird ausgeführt wenn of ein td ele
 
 
 function changeplayer() { // gibt X oder O bei aufruf zurück, je nach vorherigem status 
-
     if (currentplayer === "X") {
-
         currentplayer = "O";
         // Dreht den Pfeil zum dem der an der Reihe ist
         document.getElementById("arrow").innerHTML = "&#8592;"
     } else {
-
         currentplayer = "X";
         // Dreht den Pfeil zum dem der an der Reihe ist
         document.getElementById("arrow").innerHTML = "&#8594;"
