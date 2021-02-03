@@ -4,6 +4,13 @@
 
 Bei unserer Aufgabe ging es darum das gelernte so gut wie es geht umzusetzen und ein Vertrauen zu JavaScript & der jeweiligen Entweicklungsumgebung zu bekommen.
 
+## Spielablauf
+
+1. Es werden Spielgröße und PointsToWin festgelegt.
+2. Die zwei Spieler geben ihre Namen an, fals gegen den Bot gespielt werden soll wird Bot ins rechte Feld eingetragen. Es wird mit dem Button bestätigt.
+3. Es wird gespielt bis das System ein Gewinner oder ein Unentschiedn für diese Runde ausruft.
+4. Eine Runde kann nach gewinn oder Unentschieden durch den Button "Neues Spiel" neugestartet werden.
+
 ## Struktur / Aufbau
 
 - `generate()` <br>
