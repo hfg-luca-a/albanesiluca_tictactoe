@@ -60,6 +60,8 @@ Bei unserer Aufgabe ging es darum das gelernte so gut wie es geht umzusetzen und
 - `placingBot()`<br>
   Dies ist die Funktion des Basic-Bots. Es werden zunächst eine Zufällige x & y Koordinate generiert. Wenn diese schon beschreiben ist wird eine neue Koordinate generiert. Wenn diese Koordinate Frei ist beschreibt diese der Bot mit seinem Zeichen. Ebnso setzt der Bot sein Zeichen im Datenmodell.
   <br>
+- `showspielferlauf()`<br>
+  Diese Funktion stellt den ganzen Spielverlauf Graphisch dar.
 
 ## Mögliche Erweiterungen
 

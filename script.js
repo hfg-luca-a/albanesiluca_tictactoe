@@ -14,14 +14,20 @@ let posarry = [];
 
 // wird in der html datei aufgerufen und im programmcode unter resetfield()
 /* jshint ignore:start */
-
+function unhidde() {
+    $('.playerconf').removeAttr('hidden')
+    $('.spielverlauf').removeAttr('hidden')     
+}
 
 function generate() {
+    unhidde()
+    showspielferlauf("&#8594; Das Spielfeld wurde generiert.")
     let newId = 0;
     // lässt input und button verschwinden 
     document.getElementById("pointstowin").setAttribute('hidden', true);
     document.getElementById("size").setAttribute('hidden', true);
     document.getElementById("generatebtn").setAttribute('hidden', true);
+    
     //leert das gamearray
     gamearry.splice(0, gamearry.length); //leert das gamearry
     $("tr").remove(); // löscht alle td elemente
@@ -42,6 +48,15 @@ function generate() {
     }
 }
 /* jshint ignore:end */
+
+//Stellt jeden Spielverlauf dar
+
+function showspielferlauf(spielvtext) {
+    
+    $('.spielverlauf').append(`<div class="unterpunkt">${spielvtext}</div>`)
+    
+}
+
 // gibt dem user visual feedback ob eine seine angegbenen parameter korrekt sind
 $("#pointstowin").change(function () {
     let temp = Number(document.getElementById("size").value) //verlegt weil zeile zu lang
@@ -61,6 +76,7 @@ $("table").on("click", "td", function () { //wird ausgeführt wenn of ein td ele
         posarry = id.split("-"); // schreibt die Positions werte in ein temp. array
         gamearry[posarry[0]][posarry[1]] = currentplayer; // schreibt  an die stelle des gamearrys den aktuellen Spieler 
         // console.log(gamearry)
+        showspielferlauf(`An den Koordinaten ${posarry[0]}|${posarry[1]} wurde ${currentplayer} gesetzt.`)
         checkunentschieden();
         checkwin(posarry);
         checkdiagonal();
@@ -96,6 +112,8 @@ function setPlayer() {
     p2.setAttribute('disabled', true);
     // Button Setplayer verschwindet
     document.getElementById("setplayerbtn").setAttribute('hidden', true);
+    showspielferlauf(`&#8594; Die Spieler wurden festgelegt <br>
+    ${document.getElementById("player1").value} & ${document.getElementById("player2").value} `)
 }
 /* jshint ignore:end */
 
@@ -270,15 +288,17 @@ function winner(zeichen) {
     //schaut wer gewonnen hat
     if (zeichen === p1) {
         //schreibt die aktuelle punktzahl in das span tag
+        showspielferlauf(`&#8594; ${document.getElementById("player1").value} hat die Runde gewonnen.`)
         console.log(document.getElementById("player1").value + " hat gewonnen")
         p1points++;
         document.getElementById("punktep1").innerText = p1points;
 
 
     } else if (zeichen === "none") {
-        //placeholder
+        showspielferlauf("&#8594; Die Runde wurd mit einem Unentschieden beendet.")
     } else if (zeichen === p2) {
         p2points++;
+        showspielferlauf(`&#8594; ${document.getElementById("player2").value} hat die Runde gewonnen.`)
         console.log(document.getElementById("player2").value + " hat gewonnen")
         document.getElementById("punktep2").innerText = p2points;
     }
@@ -330,6 +350,7 @@ function placingBot() { //Zufalls Bot
             randomtdtag.innerText = temp
             //setzt an der gleichen stelle im gamearry ein O
             gamearry[x][y] = temp
+            showspielferlauf(`An den Koordinaten ${x}|${y} wurde ${temp} vom Bot gesetzt.`)
             // console.warn(x + ":" + y + "|" + document.getElementById(`${x}-${y}`).innerHTML)
             checkunentschieden()
             checkwin(temparry)
